@@ -391,4 +391,24 @@ public class LikeablePersonControllerTests {
 
         assertThat(newAttractiveTypeCode).isEqualTo(2);
     }
+    @Test
+    @DisplayName("기존 호감 표시 후 3시간이 지나기 전까지는 호감이 변경되지 않음")
+    @WithUserDetails("user3")
+    void t016() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/usr/likeablePerson/modify/1")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "insta_user4")
+                        .param("attractiveTypeCode", "3")
+                )
+                .andDo(print());
+
+        // THEN
+        // 페이지 생성시에 만들어진 데이터를 수정 시도 시
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("modify"))
+                .andExpect(status().is4xxClientError());
+    }
 }

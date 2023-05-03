@@ -113,6 +113,11 @@ public class LikeablePersonController {
     public String modify(@PathVariable Long id, @Valid ModifyForm modifyForm) {
         RsData<LikeablePerson> rsData = likeablePersonService.modifyAttractive(rq.getMember(), id, modifyForm.getAttractiveTypeCode());
 
+
+        LikeablePerson likeablePerson = likeablePersonService.findById(id).orElseThrow();
+        RsData canModifyRsData = likeablePersonService.canModifyLike(rq.getMember(), likeablePerson);
+        if (canModifyRsData.isFail()) return rq.historyBack(canModifyRsData);
+
         if (rsData.isFail()) {
             return rq.historyBack(rsData);
         }
