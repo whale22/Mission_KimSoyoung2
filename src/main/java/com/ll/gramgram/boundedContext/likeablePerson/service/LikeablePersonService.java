@@ -89,7 +89,7 @@ public class LikeablePersonService {
         if (likeablePerson == null) return RsData.of("F-1", "이미 삭제되었습니다.");
 
         if (!likeablePerson.isModifyUnlocked()){
-            return RsData.of("F-2", "3시간이 지나지 않아 호감표시 삭제가 제한됩니다.");
+            return RsData.of("F-2", "제한 시간이 지나지 않아 호감표시 삭제가 불가합니다.");
         }
 
         // 수행자의 인스타계정 번호
@@ -214,7 +214,7 @@ public class LikeablePersonService {
         }
 
         if (!likeablePerson.isModifyUnlocked()){
-            return RsData.of("F-2", "3시간이 지나지 않아 호감표시 변경이 제한됩니다.");
+            return RsData.of("F-2", "제한 시간이 지나지 않아 호감표시 변경이 불가합니다.");
         }
 
         return RsData.of("S-1", "호감표시취소가 가능합니다.");
