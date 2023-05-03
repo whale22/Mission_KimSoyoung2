@@ -88,6 +88,10 @@ public class LikeablePersonService {
     public RsData canCancel(Member actor, LikeablePerson likeablePerson) {
         if (likeablePerson == null) return RsData.of("F-1", "이미 삭제되었습니다.");
 
+        if (!likeablePerson.isModifyUnlocked()){
+            return RsData.of("F-2", "3시간이 지나지 않아 호감표시 삭제가 제한됩니다.");
+        }
+
         // 수행자의 인스타계정 번호
         long actorInstaMemberId = actor.getInstaMember().getId();
         // 삭제 대상의 작성자(호감표시한 사람)의 인스타계정 번호
@@ -209,6 +213,9 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감표시를 취소할 권한이 없습니다.");
         }
 
+        if (!likeablePerson.isModifyUnlocked()){
+            return RsData.of("F-2", "3시간이 지나지 않아 호감표시 변경이 제한됩니다.");
+        }
 
         return RsData.of("S-1", "호감표시취소가 가능합니다.");
     }
