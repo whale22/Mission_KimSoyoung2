@@ -11,7 +11,7 @@
 
 #### 체크리스트
 - [x] 호감 목록에 표시되는 쿨타임 잔여 시간을 수정하고 기능에 적용한다.
-- [x] 
+- [x] 네이버 클라우드에 docker를 설치하고 코드를 다운받아 배포한다.
 
 ### 3주차 미션 요약
 
@@ -19,7 +19,9 @@
 
 **[접근 방법]**
 
-- getModifyUnlockDateRemainStrHuman 메소드를 수정한다.
+- Entity의 getModifyUnlockDateRemainStrHuman 메소드를 수정한다.
+  - 이전에 작성된 메소드 및 변수들을 참고
+- Controller의 canCancel과 canModify에 확인 작업을 추가한다.
   - 이전에 작성된 메소드 및 변수들을 참고
 - **테스트 : AppConfig에 설정된 쿨타임 값을 변경하여 정상 작동 되는 것을 확인**
 
@@ -34,4 +36,4 @@
 - SSL문제 해결
 
 #### 구현 중 어려웠던 점/궁금한 점
-- 
+- 페이스북/인스타그램 연동 시 https로의 접속에 문제가 있어 확인
