@@ -41,9 +41,9 @@ public class LikeablePerson extends BaseEntity {
 
     // 초 단위에서 올림 해주세요.
     public String getModifyUnlockDateRemainStrHuman() {
-        Duration du = Duration.between(LocalDateTime.now(), this.modifyUnlockDate);
-        if(du.getSeconds()<AppConfig.getLikeablePersonModifyCoolTime())
-            return du.getSeconds()/3600 +"시간 "+ (int) Math.ceil(du.getSeconds()%3600/60) + "분 뒤";
+        Duration duration = Duration.between(LocalDateTime.now(), this.modifyUnlockDate);
+        if(duration.getSeconds()<AppConfig.getLikeablePersonModifyCoolTime())
+            return duration.getSeconds()/3600 +"시간 "+ (long) Math.ceil(duration.getSeconds()%3600/60) + "분 뒤";
         else return "현재";
     }
 
