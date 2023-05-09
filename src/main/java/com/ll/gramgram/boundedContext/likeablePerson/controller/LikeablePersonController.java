@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -140,27 +141,27 @@ public class LikeablePersonController {
             }
 
             if (attractiveTypeCode != 0) {
-                // likeablePeopleStream = likeablePeopleStream.filter();
+                    likeablePeopleStream = likeablePeopleStream.filter(l -> l.getAttractiveTypeCode() == attractiveTypeCode);
             }
 
             switch (sortCode) {
-                case 1:
+                case 1: //최신순
+                    likeablePeopleStream = likeablePeopleStream.sorted(Comparator.comparing(LikeablePerson::getCreateDate));
+                    break;
+                case 2: //날짜순
+                    likeablePeopleStream = likeablePeopleStream.sorted(Comparator.comparing(LikeablePerson::getCreateDate).reversed());
+                    break;
+                case 3: //인기많은순
                     // likeablePeopleStream = likeablePeopleStream.sorted(??);
                     break;
-                case 2:
+                case 4: //인기적은순
                     // likeablePeopleStream = likeablePeopleStream.sorted(??);
                     break;
-                case 3:
+                case 5: //성별순
                     // likeablePeopleStream = likeablePeopleStream.sorted(??);
                     break;
-                case 4:
-                    // likeablePeopleStream = likeablePeopleStream.sorted(??);
-                    break;
-                case 5:
-                    // likeablePeopleStream = likeablePeopleStream.sorted(??);
-                    break;
-                case 6:
-                    // likeablePeopleStream = likeablePeopleStream.sorted(??);
+                case 6: //호감사유순
+                    likeablePeopleStream = likeablePeopleStream.sorted(Comparator.comparing(LikeablePerson::getAttractiveTypeCode));
                     break;
 
             }
