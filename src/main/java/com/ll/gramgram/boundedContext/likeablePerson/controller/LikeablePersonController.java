@@ -133,7 +133,10 @@ public class LikeablePersonController {
             Stream<LikeablePerson> likeablePeopleStream = instaMember.getToLikeablePeople().stream();
 
             if (gender != null) {
-                // likeablePeopleStream = likeablePeopleStream.filter();
+                if(gender.equals("W"))
+                    likeablePeopleStream = likeablePeopleStream.filter(l -> l.getFromInstaMember().getGender().equals("W"));
+                else if(gender.equals("M"))
+                    likeablePeopleStream = likeablePeopleStream.filter(l -> l.getFromInstaMember().getGender().equals("M"));
             }
 
             if (attractiveTypeCode != 0) {
