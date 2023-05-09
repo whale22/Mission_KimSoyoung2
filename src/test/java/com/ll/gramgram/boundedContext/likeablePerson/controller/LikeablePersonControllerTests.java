@@ -172,16 +172,15 @@ public class LikeablePersonControllerTests {
         ResultActions resultActions = mvc
                 .perform(post("/usr/likeablePerson/modify/2")
                         .with(csrf()) // CSRF 키 생성
-                        .param("username", "abcd")
                         .param("attractiveTypeCode", "3")
                 )
                 .andDo(print());
 
-//        // THEN
-//        resultActions
-//                .andExpect(handler().handlerType(LikeablePersonController.class))
-//                .andExpect(handler().methodName("modify"))
-//                .andExpect(status().is3xxRedirection());
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("modify"))
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
@@ -391,24 +390,47 @@ public class LikeablePersonControllerTests {
 
         assertThat(newAttractiveTypeCode).isEqualTo(2);
     }
+
     @Test
-    @DisplayName("기존 호감 표시 후 3시간이 지나기 전까지는 호감이 변경되지 않음")
+    @DisplayName("호감취소는 쿨타임이 지나야 가능하다.")
     @WithUserDetails("user3")
     void t016() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(post("/usr/likeablePerson/modify/1")
+                .perform(
+                        delete("/usr/likeablePerson/3")
+                                .with(csrf())
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("cancel"))
+                .andExpect(status().is4xxClientError())
+        ;
+
+        assertThat(likeablePersonService.findById(3L).isPresent()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("호감사유변경은 쿨타임이 지나야 가능하다.")
+    @WithUserDetails("user3")
+    void t017() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/usr/likeablePerson/modify/3")
                         .with(csrf()) // CSRF 키 생성
-                        .param("username", "insta_user4")
                         .param("attractiveTypeCode", "3")
                 )
                 .andDo(print());
 
         // THEN
-        // 페이지 생성시에 만들어진 데이터를 수정 시도 시
         resultActions
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("modify"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is4xxClientError());
+
+        assertThat(likeablePersonService.findById(3L).get().getAttractiveTypeCode()).isEqualTo(2);
     }
 }
